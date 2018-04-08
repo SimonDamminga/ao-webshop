@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\category_product;
 use App\Category;
+use App\Cart;
+use Session;
 
 class ProductsController extends Controller
 {
@@ -42,13 +44,30 @@ class ProductsController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'price' => 'required'
+            'price' => 'required',
+            'image_url' => 'image|nullable|max:1999'
         ]);
+
+        if($request->hasFile('image_url')){
+            //get filename with extention
+            $filenameWithExtension = $request->file('image_url')->getClientOriginalName();
+            // just filename 
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+            //get just ext
+            $extension = $request->file('image_url')->getClientOriginalExtension();
+            //filaneme to store
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            //strore
+            $path = $request->file('image_url')->storeAs('public/images', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'noimage.jpg';
+        }
 
         $product = new Product;
         $product->name = $request->name;
         $product->description = $request->description;
-        $product->price =   $request->price;
+        $product->price = $request->price;
+        $product->image_url = $fileNameToStore;
         $product->save();
 
 
@@ -70,7 +89,8 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        return view('products.show')->with(compact('product'));
     }
 
     /**
@@ -81,7 +101,9 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = Category::all();
+        $product = Product::find($id);
+        return view('products.edit')->with(compact('categories', 'product'));
     }
 
     /**
@@ -93,7 +115,28 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product = Product::find($id);
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->save();
+
+        $categories = category_product::where('product_id', $id)->get();
+
+        foreach($categories as $category):
+            $c_del = category_product::where('product_id', $category->product_id);
+            $c_del->delete();
+        endforeach;
+
+        foreach($request->categories as $category):
+            $cat_prod = new category_product;
+            $cat_prod->product_id = $product->id;
+            $cat_prod->category_id = $category;
+            $cat_prod->save();
+        endforeach;
+
+        return redirect('/products');
+
     }
 
     /**
@@ -104,6 +147,27 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+        $categories = category_product::where('product_id', $id)->get();
+        foreach($categories as $category):
+            $c_del = category_product::where('product_id', $category->product_id);
+            $c_del->delete();
+        endforeach;
+
+        $product->delete();
+
+        return redirect('/products');
+    }
+
+
+    public function getAddToCart(Request $request, $id){
+        $product = Product::find($id);
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->add($product, $product->id);
+
+        $request->session()->put('cart', $cart);
+        dd($request->session()->get('cart'));
+        return redirect('/products');
     }
 }

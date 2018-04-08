@@ -12,7 +12,7 @@ endforeach;
 
 ?>
 <h1>Product Toevoegen</h1><hr>
-{{Form::open(['action' => 'ProductsController@store', 'method' => 'POST'])}}
+{{Form::open(['action' => 'ProductsController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data'])}}
 <div class="form-group">
     {{Form::label('Naam Product')}}
     {{Form::text('name', '', ['class' => 'form-control', 'placeholder' => 'Product Naam'])}}  
@@ -28,6 +28,10 @@ endforeach;
 <div class="form-group">
     {{Form::label('Categorie')}}
     {{Form::select('categories[]', $options, '', ['class' => 'form-control', 'multiple'])}}
+</div>
+<div class="form-group">
+    {{Form::label('Kies een afbeelding')}} <br>
+    {{Form::file('image_url')}}
 </div>
 
 {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}

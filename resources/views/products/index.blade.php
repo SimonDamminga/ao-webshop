@@ -2,36 +2,23 @@
 
 @section('content')
 <h1>Alle Producten</h1>
-
-<table class="table">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Naam</th>
-        <th>categorie</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>    
+<div class="row">
     @foreach($products as $product)
-        <tr>
-            <td>{{$product->id}}</td>
-            <td>{{$product->name}}</td>
-            <td>
-                @foreach($product->categories as $category)
-                    {{$category->name}}, 
-                @endforeach
-            </td>
-            <td>
-                <div class="float-right">
-                    <a class="btn btn-primary" href="/products/{{$product->id}}/edit">Edit</a>
-                    {{Form::open(['action' => 'ProductsControlle@destroy', 'method' => 'POST'])}}
+        <div class="col-4">
+                
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="/storage/images/{{$product->image_url}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{$product->name}}</h5>
+                    <p class="card-text">&#8364; {{$product->price}}</p>
+                    <a href="/products/{{$product->id}}" class="btn btn-primary">Bekijk</a>
                 </div>
-            </td>
-        </tr>    
-    @endforeach
-    </tbody>
-  </table>        
+            </div>
+            <br>
+        </div>
+    @endforeach     
+</div>
+
 
 
 @endsection

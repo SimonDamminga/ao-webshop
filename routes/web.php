@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/add-to-cart/{id}', [
+    'uses' => 'ProductsController@getAddToCart',
+    'as' => 'products.addToCart'
+]);
 Route::resource('categories', 'CategoriesController');
 Route::resource('products', 'ProductsController');
 Route::get('/home', 'HomeController@index')->name('home');
