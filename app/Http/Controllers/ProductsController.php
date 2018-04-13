@@ -19,7 +19,7 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::orderBy('id', 'desc')->get();
-        return view('products.index')->with('products', $products);
+        return view('products.index')->with(compact('products'));
     }
 
     /**
@@ -45,19 +45,16 @@ class ProductsController extends Controller
             'name' => 'required',
             'description' => 'required',
             'price' => 'required',
+            'discount' => 'required',
             'image_url' => 'image|nullable|max:1999'
         ]);
 
         if($request->hasFile('image_url')){
-            //get filename with extention
+            //save file
             $filenameWithExtension = $request->file('image_url')->getClientOriginalName();
-            // just filename 
             $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
-            //get just ext
             $extension = $request->file('image_url')->getClientOriginalExtension();
-            //filaneme to store
             $fileNameToStore = $filename.'_'.time().'.'.$extension;
-            //strore
             $path = $request->file('image_url')->storeAs('public/images', $fileNameToStore);
         }else{
             $fileNameToStore = 'noimage.jpg';
@@ -67,6 +64,7 @@ class ProductsController extends Controller
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
+        $product->discount = $request->discount;
         $product->image_url = $fileNameToStore;
         $product->save();
 
@@ -167,7 +165,18 @@ class ProductsController extends Controller
         $cart->add($product, $product->id);
 
         $request->session()->put('cart', $cart);
-        dd($request->session()->get('cart'));
         return redirect('/products');
+    }
+
+    public function getCart()
+    {
+        if(!Session::has('cart')){
+           return view('shopping-cart.index'); 
+        }
+
+        $oldCart = Session::get('cart');
+        $cart = new Cart($oldCart);
+        return view('shopping-cart.index', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+        
     }
 }

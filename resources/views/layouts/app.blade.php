@@ -21,7 +21,6 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -39,7 +38,14 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
+                        <!-- Authentication Links -->                        
+                        <li class="nav-item">
+                            <a href="/shopping-cart" class="nav-link">
+                                <i class="fas fa-shopping-cart"></i>
+                                Winkelmandje     
+                                <span class="badge badge-secondary">{{Session::has('cart') ? Session::get('cart')->totalQty : ''}}</span>                           
+                            </a>
+                        </li>
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
@@ -62,6 +68,7 @@
                                 </div>
                             </li>
                         @endguest
+
                     </ul>
                 </div>
             </div>
@@ -70,6 +77,9 @@
         <main class="py-4 container">
             @yield('content')
         </main>
-    </div>
+        <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace( 'article-ckeditor' );
+        </script>
 </body>
 </html>

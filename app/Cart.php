@@ -6,7 +6,7 @@ namespace App;
 class Cart
 {
     public $items = null;
-    public $totlalQty = 0;
+    public $totalQty = 0;
     public $totalPrice = 0;
 
     public function __construct($oldCart)
@@ -19,16 +19,21 @@ class Cart
     }
 
     public function add($item, $id){
-        $storedItem = ['qty' => 0, 'price' => $item->price, 'item' => $item];
+        $discount = $item->price / 100 * $item->discount; 
+        $newPrice = $item->price - $discount;
+
+        $storedItem = ['qty' => 0, 'price' => $newPrice, 'item' => $item];
         if($this->items){
             if(array_key_exists($id, $this->items)){
                 $storedItem = $this->items[$id];
             }
         }
+
         $storedItem['qty']++;
-        $storedItem['price'] = $item->price * $storedItem['qty'];
+        $storedItem['price'] = $newPrice * $storedItem['qty'];
+
         $this->items[$id] = $storedItem;
-        $this->totlalQty++;
-        $this->totalPrice += $item->price;
+        $this->totalQty++;
+        $this->totalPrice += $newPrice;
     }
 }

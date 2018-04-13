@@ -21,6 +21,8 @@ Route::get('/add-to-cart/{id}', [
     'uses' => 'ProductsController@getAddToCart',
     'as' => 'products.addToCart'
 ]);
+
+Route::get('/shopping-cart', 'ProductsController@getCart');
 Route::resource('categories', 'CategoriesController');
 Route::resource('products', 'ProductsController');
 Route::get('/home', 'HomeController@index')->name('home');
