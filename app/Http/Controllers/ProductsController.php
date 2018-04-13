@@ -121,11 +121,6 @@ class ProductsController extends Controller
 
         $categories = category_product::where('product_id', $id)->get();
 
-        foreach($categories as $category):
-            $c_del = category_product::where('product_id', $category->product_id);
-            $c_del->delete();
-        endforeach;
-
         foreach($request->categories as $category):
             $cat_prod = new category_product;
             $cat_prod->product_id = $product->id;
