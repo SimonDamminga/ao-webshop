@@ -12,8 +12,13 @@
                         <span class="badge badge-success">&#8364; {{$product['price']}}</span>
                     </li>
                 @endforeach
-                {{$totalPrice}}
+                
+
+
+                
             </ul>
+            <p>totale prijs: {{$totalPrice}}</p>
+            <a class="btn btn-primary" href="/orders/checkout">Ga naar betalen</a>
         </div>
     </div>
 

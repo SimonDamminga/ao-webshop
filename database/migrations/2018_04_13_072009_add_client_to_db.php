@@ -15,13 +15,13 @@ class AddClientToDb extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date-of-birth')->nullable();
-            $table->string('postal-code')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('postal_code')->nullable();
             $table->string('street')->nullable();
-            $table->integer('house-nr')->nullable();
+            $table->integer('house_nr')->nullable();
             $table->string('country')->nullable();
             $table->string('gender')->nullable();
-            $table->string('phone-number')->nullable();
+            $table->string('phone_number')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

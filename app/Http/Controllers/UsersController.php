@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Client;
 
 class UsersController extends Controller
 {
@@ -56,7 +58,10 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = User::find($id);
+        return view('users/edit')->with([
+            'user' => $user
+        ]);
     }
 
     /**
@@ -68,7 +73,23 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        $client = Client::where('user_id', $id)->first();
+        $client->date_of_birth = $request->date;
+        $client->postal_code = $request->postal_code;
+        $client->street = $request->street;
+        $client->house_nr = $request->house_nr;
+        $client->country = $request->country;
+        $client->phone_number = $request->phone_number;
+        $client->gender = $request->gender;
+        $client->save();
+
+        return redirect('/home');
     }
 
     /**

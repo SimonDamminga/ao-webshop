@@ -22,7 +22,7 @@ class Cart
         $discount = $item->price / 100 * $item->discount; 
         $newPrice = $item->price - $discount;
 
-        $storedItem = ['qty' => 0, 'price' => $newPrice, 'item' => $item];
+        $storedItem = ['qty' => 0, 'price' => $newPrice, 'item' => $item, 'id' => $id];
         if($this->items){
             if(array_key_exists($id, $this->items)){
                 $storedItem = $this->items[$id];

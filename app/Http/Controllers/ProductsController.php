@@ -7,7 +7,10 @@ use App\Product;
 use App\category_product;
 use App\Category;
 use App\Cart;
+use App\Order;
+use App\Orderline;
 use Session;
+use Auth;
 
 class ProductsController extends Controller
 {
@@ -173,5 +176,33 @@ class ProductsController extends Controller
         $cart = new Cart($oldCart);
         return view('shopping-cart.index', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
         
+    }
+
+    public function checkout(){
+        $cart = Session::get('cart');
+        $orders = array();
+
+        $order = new Order;
+        $order->client_id = Auth::user()->id;
+        $order->status = 'pending';
+        $order->date_created = date("Y/m/d");
+        $order->save();
+
+
+        foreach($cart->items as $prod){
+            $orderline = new Orderline;
+            $orderline->order_id = $order->id;
+            $orderline->product_id = $prod['item']['id'];
+            $orderline->amount = $prod['qty'];
+            $orderline->save();     
+            
+            array_push($orders, $orderline);
+        }
+
+        var_dump($orders);
+        Session::forget('cart');
+
+
+        return view('shopping-cart.checkout')->with(['orders' => $orders]);
     }
 }

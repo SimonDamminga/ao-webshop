@@ -22,7 +22,10 @@ Route::get('/add-to-cart/{id}', [
     'as' => 'products.addToCart'
 ]);
 
+Route::get('/orders/checkout', 'ProductsController@checkout');
+
 Route::get('/shopping-cart', 'ProductsController@getCart');
 Route::resource('categories', 'CategoriesController');
 Route::resource('products', 'ProductsController');
+Route::resource('users', 'UsersController');
 Route::get('/home', 'HomeController@index')->name('home');
