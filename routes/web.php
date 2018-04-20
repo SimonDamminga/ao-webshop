@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@home');
 
 Auth::routes();
 
@@ -23,6 +21,11 @@ Route::get('/add-to-cart/{id}', [
 ]);
 
 Route::get('/orders/checkout', 'ProductsController@checkout');
+Route::get('/orders/{id}', 'ProductsController@orders');
+Route::get('/shopping-cart/delete/{id}', 'ProductsController@deleteItemFromShoppingCart');
+Route::get('/shopping-cart/remove-one/{id}', 'ProductsController@removeOneFromShoppingCart');
+Route::get('/shopping-cart/add-one/{id}', 'ProductsController@addOneToShoppingCart');
+Route::get('/products/cat/{id}', 'ProductsController@productsByCat');
 
 Route::get('/shopping-cart', 'ProductsController@getCart');
 Route::resource('categories', 'CategoriesController');

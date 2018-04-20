@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['categories' => $categories])
 
 @section('content')
 <div class="jumbotron">
@@ -8,7 +8,7 @@
     <form>
         <div class="row">
           <div class="col-md-11">
-            <input type="text" class="form-control" placeholder="Zoek een product">
+            <input type="text" class="form-control" placeholder="Zoek op categorie">
           </div>
           <div class="col-md-1">
             <a class="btn btn-primary" href="">Zoek</a>

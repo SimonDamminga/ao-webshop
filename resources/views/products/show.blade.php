@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['categories' => $categories])
 
 @section('content')
 <a href="/products" class="btn btn-primary">Terug</a><br><br>

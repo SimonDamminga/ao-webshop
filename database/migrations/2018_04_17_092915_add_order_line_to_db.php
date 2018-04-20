@@ -17,6 +17,7 @@ class AddOrderLineToDb extends Migration
             $table->increments('id');
             $table->integer('order_id');
             $table->integer('product_id');
+            $table->integer('user_id');
             $table->integer('amount');
         });
     }

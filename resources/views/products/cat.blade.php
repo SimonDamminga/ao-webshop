@@ -1,7 +1,7 @@
-@extends('layouts.app', ['categories' => $categories])
-<?php
 
-?>
+
+@extends('layouts.app', ['categories' => $categories])
+
 @section('content')
 <h1>Alle Producten</h1>
 <div class="row">
@@ -37,3 +37,5 @@
 
 
 @endsection
+
+?>

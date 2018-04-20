@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.app', ['categories' => $categories])
 
 @section('content')
 
 <?php
 
 foreach($orders as $order){
-    var_dump($order->order->user->name);
+    var_dump($order);
 }
 
 ?>

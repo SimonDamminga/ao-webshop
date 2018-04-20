@@ -12,7 +12,7 @@ if(Auth::user()->client->gender == 'male'){
 
 ?>
 
-@extends('layouts.app')
+@extends('layouts.app', ['categories' => $categories])
 
 @section('content')
 <div class="container">
@@ -39,7 +39,6 @@ if(Auth::user()->client->gender == 'male'){
                     <b>Geslacht:</b>@if(Auth::user()->client->gender == null) niet ingevuld @else {{$gender}} @endif<br>
                     <b>Mobiel nummer:</b>@if(Auth::user()->client->phone_number == null) niet ingevuld @else {{Auth::user()->client->phone_number}} @endif<br><br>
 
-
                     <a class="btn btn-primary btn-sm" href="/users/{{Auth::user()->id}}/edit">Pas aan</a>
                 </div>
             </div>
@@ -58,7 +57,7 @@ if(Auth::user()->client->gender == 'male'){
                         </div>
                     @endif
                     Aantal orders: 0 <br><br>
-                    <a class="btn btn-primary btn-sm" href="/orders">Bekijk je orders</a>
+                    <a class="btn btn-primary btn-sm" href="/orders/{{Auth::user()->id}}">Bekijk je orders</a>
                 </div>
             </div>
         </div>

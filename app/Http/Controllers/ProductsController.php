@@ -25,6 +25,13 @@ class ProductsController extends Controller
         return view('products.index')->with(compact('products'));
     }
 
+
+    public function productsByCat($id)
+    {
+        $products = category_product::where('category_id', $id)->get();
+        return view('products.cat')->with(compact('products'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -166,6 +173,46 @@ class ProductsController extends Controller
         return redirect('/products');
     }
 
+    public function removeOneFromShoppingCart($id)
+    {
+        if(Session::has('cart')){
+            $cart = Session::get('cart');
+            $cart->totalPrice -= $cart->items[$id]['price'];
+            $cart->totalQty -= 1;
+            $cart->items[$id]['qty'] -= 1;
+            if($cart->items[$id]['qty'] == 0){
+                $this->deleteItemFromShoppingCart($id);
+            }
+
+            return redirect('/shopping-cart');
+        }
+    }
+
+    public function addOneToShoppingCart(Request $request, $id)
+    {
+        $product = Product::find($id);
+        $oldCart = Session::has('cart') ? Session::get('cart') : null;
+        $cart = new Cart($oldCart);
+        $cart->add($product, $product->id);
+
+        $request->session()->put('cart', $cart);
+        return redirect('/shopping-cart');
+    }
+
+    public function deleteItemFromShoppingCart($id)
+    {
+        if(Session::has('cart')){
+            $cart = Session::get('cart');
+            $cart->totalPrice -= $cart->items[$id]['price'];
+            $cart->totalQty -= $cart->items[$id]['qty'];
+            unset($cart->items[$id]);
+            if($cart->totalQty == 0){
+                Session::forget('cart');
+            }
+            return redirect('/shopping-cart');
+        }
+    }
+
     public function getCart()
     {
         if(!Session::has('cart')){
@@ -179,11 +226,13 @@ class ProductsController extends Controller
     }
 
     public function checkout(){
+        if(!Auth::user())
+            return redirect('/login');
         $cart = Session::get('cart');
         $orders = array();
 
         $order = new Order;
-        $order->client_id = Auth::user()->id;
+        $order->user_id = Auth::user()->id;
         $order->status = 'pending';
         $order->date_created = date("Y/m/d");
         $order->save();
@@ -193,16 +242,25 @@ class ProductsController extends Controller
             $orderline = new Orderline;
             $orderline->order_id = $order->id;
             $orderline->product_id = $prod['item']['id'];
+            $orderline->user_id = Auth::user()->id;
             $orderline->amount = $prod['qty'];
             $orderline->save();     
             
             array_push($orders, $orderline);
         }
 
-        var_dump($orders);
-        Session::forget('cart');
+        //Session::forget('cart');
 
 
         return view('shopping-cart.checkout')->with(['orders' => $orders]);
     }
+
+    public function orders($id)
+    {
+        $orders = Orderline::where('user_id', $id)->get();
+
+        return view('orders/index')->with(['orders' => $orders]);
+    }
+
+
 }

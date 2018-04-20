@@ -11,8 +11,7 @@ foreach($all as $country){
 }
 
 ?>
-
-@extends('layouts/app')
+@extends('layouts.app', ['categories' => $categories])
 
 @section('content')
 
