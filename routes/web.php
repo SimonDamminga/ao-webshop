@@ -26,7 +26,8 @@ Route::get('/shopping-cart/delete/{id}', 'ProductsController@deleteItemFromShopp
 Route::get('/shopping-cart/remove-one/{id}', 'ProductsController@removeOneFromShoppingCart');
 Route::get('/shopping-cart/add-one/{id}', 'ProductsController@addOneToShoppingCart');
 Route::get('/products/cat/{id}', 'ProductsController@productsByCat');
-
+Route::get('/order/view/{id}', 'ProductsController@orderView');
+Route::get('/order/update/{id}', 'ProductsController@updateOrder');
 
 Route::get('/shopping-cart', 'ProductsController@getCart');
 Route::resource('categories', 'CategoriesController');

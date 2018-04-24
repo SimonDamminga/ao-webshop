@@ -33,6 +33,13 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        @if(Auth::user())
+                            @if(Auth::user()->is_admin == true)
+                            <li class="nav-item">
+                                <a class="nav-link" href="/backlog">Backlog</a>
+                            </li>
+                            @endif
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link" href="/products">Producten</a>
                         </li>

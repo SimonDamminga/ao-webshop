@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Order;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -31,6 +33,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('home')->with(['categories' => $categories]);
+        $orders = Order::where('user_id', Auth::user()->id)->get();
+        return view('home')->with(['categories' => $categories, 'orders' => $orders]);
     }
 }

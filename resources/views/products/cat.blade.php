@@ -3,7 +3,7 @@
 @extends('layouts.app', ['categories' => $categories])
 
 @section('content')
-<h1>Alle Producten</h1>
+<h1>{{$category_name->name}}</h1>
 <div class="row">
     @foreach($products as $product)
 

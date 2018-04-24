@@ -30,8 +30,9 @@ class ProductsController extends Controller
     public function productsByCat($id)
     {
         $categories = Category::all();
+        $category_name = Category::find($id);
         $products = category_product::where('category_id', $id)->get();
-        return view('products.cat')->with(compact('products', 'categories'));
+        return view('products.cat')->with(compact('products', 'categories', 'category_name'));
     }
 
     /**
@@ -249,11 +250,13 @@ class ProductsController extends Controller
             $orderline->product_id = $prod['item']['id'];
             $orderline->user_id = Auth::user()->id;
             $orderline->amount = $prod['qty'];
+            $orderline->total_price = $prod['price'] * $prod['qty'];
             $orderline->save();     
             
             array_push($orders, $orderline);
         }
 
+        return redirect('/order/view/'.$order->id);
         //Session::forget('cart');
 
 
@@ -266,6 +269,25 @@ class ProductsController extends Controller
         $orders = Order::where('user_id', $id)->get();
 
         return view('orders/index')->with(['orders' => $orders, 'categories' => $categories]);
+    }
+
+    public function orderView($id)
+    {
+        $categories = Category::all();
+        $orderlines = Orderline::where('order_id', $id)->get();
+
+        return view('orders/view')->with(['categories' => $categories, 'orderlines' => $orderlines]);
+    }
+
+    public function updateOrder($id)
+    {
+        $order = Order::find($id);
+
+        $order->status = 'Payed';
+        $order->save();
+
+        Session::forget('cart');
+        return redirect('/order/view/'.$id);
     }
 
 

@@ -12,19 +12,19 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert([
-            'cat-name' => 'Witgoed'
-        ],
-        [
-            'cat-name' => 'Electronica'
-        ],
-        [
-            'cat-name' => 'Tuinartikelen'
-        ],
-        [
-            'cat-name' => 'Kleding'
-        ],
-        [
-            'cat-name' => 'Boeken'
+            'name' => 'Witgoed'
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Electronica'
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Boeken'
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Voedsel'
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Kleding'
         ]);
     }
 }

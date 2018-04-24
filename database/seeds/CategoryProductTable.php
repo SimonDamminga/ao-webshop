@@ -18,7 +18,8 @@ class CategoryProductTable extends Seeder
             DB::table('category_product')->insert([
                 'category_id' => $categories->random()->id,
                 'product_id' => $product->id,
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s')
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
             ]);
         }
     }

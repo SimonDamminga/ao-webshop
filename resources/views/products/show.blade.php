@@ -32,7 +32,7 @@
     </div><br>
     <p class="lead">
         <p>Voeg toe aan winkelmand</p>
-        <a class="btn btn-primary btn-lg" href="/add-to-cart/{{$product->id}}" role="button"><i class="fas fa-cart-plus"></i></a>
+        <a class="btn btn-primary btn-lg" href="/add-to-cart/{{$product->id}}" role="button"><i class="fas fa-cart-plus"></i></a> 
     </p>
 </div>
 @endsection

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddOrderLineToDb extends Migration
+class CreateReviewsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class AddOrderLineToDb extends Migration
      */
     public function up()
     {
-        Schema::create('orderLines', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id');
             $table->integer('product_id');
             $table->integer('user_id');
-            $table->integer('amount');
-            $table->float('total_price');
+            $table->text('review');
+            $table->float('stars');
+            $table->timestamps();
         });
     }
 
@@ -30,6 +30,6 @@ class AddOrderLineToDb extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orderLines');
+        Schema::dropIfExists('reviews');
     }
 }
