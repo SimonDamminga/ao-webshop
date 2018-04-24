@@ -21,15 +21,17 @@ class ProductsController extends Controller
      */
     public function index()
     {
+        $categories = Category::all();
         $products = Product::orderBy('id', 'desc')->get();
-        return view('products.index')->with(compact('products'));
-    }
+        return view('products.index')->with(compact('products', 'categories'));
+    } 
 
 
     public function productsByCat($id)
     {
+        $categories = Category::all();
         $products = category_product::where('category_id', $id)->get();
-        return view('products.cat')->with(compact('products'));
+        return view('products.cat')->with(compact('products', 'categories'));
     }
 
     /**
@@ -97,8 +99,9 @@ class ProductsController extends Controller
      */
     public function show($id)
     {
+        $categories = Category::all();
         $product = Product::find($id);
-        return view('products.show')->with(compact('product'));
+        return view('products.show')->with(compact('product', 'categories'));
     }
 
     /**
@@ -215,17 +218,19 @@ class ProductsController extends Controller
 
     public function getCart()
     {
+        $categories = Category::all();
         if(!Session::has('cart')){
-           return view('shopping-cart.index'); 
+           return view('shopping-cart.index')->with(['categories' => $categories]); 
         }
 
         $oldCart = Session::get('cart');
         $cart = new Cart($oldCart);
-        return view('shopping-cart.index', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice]);
+        return view('shopping-cart.index', ['products' => $cart->items, 'totalPrice' => $cart->totalPrice, 'categories' => $categories]);
         
     }
 
     public function checkout(){
+        $categories = Category::all();
         if(!Auth::user())
             return redirect('/login');
         $cart = Session::get('cart');
@@ -252,14 +257,15 @@ class ProductsController extends Controller
         //Session::forget('cart');
 
 
-        return view('shopping-cart.checkout')->with(['orders' => $orders]);
+        return view('shopping-cart.checkout')->with(['orders' => $orders, 'categories' => $categories]);
     }
 
     public function orders($id)
     {
-        $orders = Orderline::where('user_id', $id)->get();
+        $categories = Category::all();
+        $orders = Order::where('user_id', $id)->get();
 
-        return view('orders/index')->with(['orders' => $orders]);
+        return view('orders/index')->with(['orders' => $orders, 'categories' => $categories]);
     }
 
 

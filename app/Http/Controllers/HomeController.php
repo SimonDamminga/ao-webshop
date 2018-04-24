@@ -23,13 +23,14 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function home()
-    {
+    { 
         $categories = Category::all();
         return view('welcome')->with(['categories' => $categories]);
     }
 
     public function index()
     {
-        return view('home');
+        $categories = Category::all();
+        return view('home')->with(['categories' => $categories]);
     }
 }

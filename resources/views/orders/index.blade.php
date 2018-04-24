@@ -3,11 +3,23 @@
 @section('content')
     @if(count($orders) > 0)
         <p>wel orders</p>
-        {{$orders[0]->user->name}} <br>
-        @foreach($orders as $order)
-            {!!$order->product->name!!}
-            <br>
-        @endforeach
+        <br>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Naam</th>
+                </tr>
+            </thead>
+            <tbody>  
+                @foreach($orders as $order)
+                    <tr>
+                        <td>{{$order->id}}</td>
+                        <td>{{$order->product_id}}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>    
     @else
         <p>geen orders</p>
     @endif
