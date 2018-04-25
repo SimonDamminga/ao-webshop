@@ -20,17 +20,17 @@ Route::get('/add-to-cart/{id}', [
     'as' => 'products.addToCart'
 ]);
 
-Route::get('/orders/checkout', 'ProductsController@checkout');
-Route::get('/orders/{id}', 'ProductsController@orders');
+
 Route::get('/shopping-cart/delete/{id}', 'ProductsController@deleteItemFromShoppingCart');
 Route::get('/shopping-cart/remove-one/{id}', 'ProductsController@removeOneFromShoppingCart');
 Route::get('/shopping-cart/add-one/{id}', 'ProductsController@addOneToShoppingCart');
 Route::get('/products/cat/{id}', 'ProductsController@productsByCat');
-Route::get('/order/view/{id}', 'ProductsController@orderView');
-Route::get('/order/update/{id}', 'ProductsController@updateOrder');
 
 Route::get('/shopping-cart', 'ProductsController@getCart');
 Route::resource('categories', 'CategoriesController');
 Route::resource('products', 'ProductsController');
 Route::resource('users', 'UsersController');
+Route::resource('orders', 'OrdersController');
+
 Route::get('/home', 'HomeController@index')->name('home');
+

@@ -24,7 +24,10 @@
                 
             </ul>
             <p>totale prijs: {{$totalPrice}}</p>
-            <a class="btn btn-secondary" href="/orders/checkout">Order maken</a>
+            {{Form::open(['action' => 'OrdersController@store', 'method' => 'POST'])}}
+                {{Form::submit('Order Maken', ['class' => 'btn btn-secondary'])}}
+            </form>
+            
         </div>
     </div>
 

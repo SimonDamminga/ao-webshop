@@ -34,7 +34,10 @@
       <p>Totale prijs: <strong>&euro;{{$total_price}}</strong></p>
 
       @if($orderlines[0]->order->status == 'pending')
-        <a class="btn btn-success" href="/order/update/{{$orderlines[0]->order->id}}">Betalen</a>
+      {{Form::open(['action' => ['OrdersController@update', $orderlines[0]->order->id], 'method' => 'POST'])}}
+        {{Form::hidden('_method', 'PUT')}}
+        {{Form::submit('Betalen', ['class' => 'btn btn-success'])}}
+      {{Form::close()}}
       @endif
 
     

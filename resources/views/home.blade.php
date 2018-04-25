@@ -57,7 +57,7 @@ if(Auth::user()->client->gender == 'male'){
                         </div>
                     @endif
                     Aantal orders: {{count($orders)}} <br><br>
-                    <a class="btn btn-primary btn-sm" href="/orders/{{Auth::user()->id}}">Bekijk je orders</a>
+                    <a class="btn btn-primary btn-sm" href="/orders">Bekijk je orders</a>
                 </div>
             </div>
         </div>

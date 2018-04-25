@@ -18,7 +18,7 @@
                         <td>{{$order->id}}</td>
                         <td>{{$order->status}}</td>
                         <td>{{$order->created_at}}</td>
-                        <th><a class="btn btn-primary" href="/order/view/{{$order->id}}">Bekijk</a></th>
+                        <th><a class="btn btn-primary" href="orders/{{$order->id}}">Bekijk</a></th>
                     </tr>
                 @endforeach
             </tbody>
