@@ -26,6 +26,13 @@ class ProductsController extends Controller
         return view('products.index')->with(compact('products', 'categories'));
     } 
 
+    public function adminIndex()
+    {
+        $categories = Category::all();
+        $products = Product::orderBy('id', 'desc')->get();
+
+        return view('products.admin_index')->with(compact('products', 'categories'));
+    }
 
     public function productsByCat($id)
     {
@@ -54,6 +61,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
@@ -127,10 +135,24 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        if($request->hasFile('image_url')){
+            //save file
+            $filenameWithExtension = $request->file('image_url')->getClientOriginalName();
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+            $extension = $request->file('image_url')->getClientOriginalExtension();
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            $path = $request->file('image_url')->storeAs('public/images', $fileNameToStore);
+        }else{
+            $fileNameToStore = 'noimage.jpg';
+        }
+
         $product = Product::find($id);
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
+        $product->discount = $request->discount;
+        $product->image_url = $fileNameToStore;
         $product->save();
 
         $categories = category_product::where('product_id', $id)->get();

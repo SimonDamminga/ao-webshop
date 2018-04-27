@@ -7,6 +7,7 @@
     }
 ?>
 @section('content')
+    <a href="/orders">Terug</a><br><br>
     <h3>Order van {{$orderlines[0]->order->user->name}}</h3>
     <p>Status: <strong>{{$orderlines[0]->order->status}}</strong></p>
     <table class="table">
@@ -40,5 +41,13 @@
       {{Form::close()}}
       @endif
 
+      @if(!$orderlines[0]->order->status == 'Deliverd')
+        @if(Auth::user()->is_admin == true)
+        {{Form::open(['action' => ['OrdersController@update', $orderlines[0]->order->id], 'method' => 'POST'])}}
+            {{Form::hidden('_method', 'PUT')}}
+            {{Form::submit('Is afgeleverd', ['class' => 'btn btn-success'])}}
+        {{Form::close()}}
+        @endif
+     @endif
     
 @endsection

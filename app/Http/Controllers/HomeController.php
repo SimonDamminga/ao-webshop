@@ -36,4 +36,11 @@ class HomeController extends Controller
         $orders = Order::where('user_id', Auth::user()->id)->get();
         return view('home')->with(['categories' => $categories, 'orders' => $orders]);
     }
+
+    public function backlog()
+    {
+        $categories = Category::all();
+
+        return view('backlog')->with(['categories' => $categories]);
+    }
 }

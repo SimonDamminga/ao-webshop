@@ -19,7 +19,12 @@ class OrdersController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $orders = Order::where('user_id', Auth::user()->id)->get();
+        if(Auth::user()->is_admin == true){
+            $orders = Order::all();
+        }else{
+            $orders = Order::where('user_id', Auth::user()->id)->get();
+        }
+        
 
         return view('orders/index')->with(['orders' => $orders, 'categories' => $categories]);
     }
@@ -105,8 +110,11 @@ class OrdersController extends Controller
     public function update(Request $request, $id)
     {
         $order = Order::find($id);
-
-        $order->status = 'Payed';
+        if(Auth::user()->is_admin == true){
+            $order->status = 'Deliverd';
+        }else{
+           $order->status = 'Payed'; 
+        }
         $order->save();
 
         Session::forget('cart');

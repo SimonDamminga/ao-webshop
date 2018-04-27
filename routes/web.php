@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\middleware\isAdmin;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,8 +31,10 @@ Route::get('/products/cat/{id}', 'ProductsController@productsByCat');
 Route::get('/shopping-cart', 'ProductsController@getCart');
 Route::resource('categories', 'CategoriesController');
 Route::resource('products', 'ProductsController');
+Route::get('/products/view/admin', 'ProductsController@adminIndex')->middleware('admin');
+
 Route::resource('users', 'UsersController');
 Route::resource('orders', 'OrdersController');
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/backlog', 'HomeController@backlog')->middleware('admin');
